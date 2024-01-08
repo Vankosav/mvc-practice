@@ -1,8 +1,12 @@
 const express = require('express');
-const { friendCreate, shortForm } = require('./controllers/functions');
+const { friendCreate, shortForm, showAllFriends } = require('./controllers/functions');
 const mongoose = require('mongoose');
 const app = express();
 const hbs = require('hbs');
+const bodyParser = require('body-parser');
+hbs.registerPartials(__dirname + '/views/partials');
+
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
@@ -14,14 +18,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/express-mongo')
 .catch((err) => console.error('Error connecting to mongo', err));
 
 
-app.get('/', shortForm);
+app.get('/', showAllFriends);
 
-app.get('/create-friend', friendCreate)
+app.get('/create-friend', shortForm)
 
-app.post('/submit-friend', (req, res) => {
-    console.log(req.body);
-    res.send('Friend created');
-});
+app.post('/created', friendCreate);
 
 
 

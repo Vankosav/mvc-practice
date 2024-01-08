@@ -1,16 +1,14 @@
-const { model } = require('mongoose');
 const  { Friend }  = require('../models/Friends');
 
 const friendCreate = (req, res)  => {
-    const firstName = req.params.firstName;
-    const lastName = req.params.lastName;
-    const age = req.params.age;
+    const friendDetails = req.body;
+    
 
-    const friend = new Friend({ firstName: firstName, lastName: lastName, age: age });
+    const friend = new Friend({ firstName: friendDetails.firstName, lastName: friendDetails.lastName, age: friendDetails.age });
     friend.save()
         .then((newFriend) => {
             console.log(`Friend saved: ${newFriend}`);
-            res.render('create-friend', { newFriend });
+            res.render('created.hbs');
         })
         .catch((err) => {
             console.log(`Error: ${err}`)
@@ -20,7 +18,18 @@ const friendCreate = (req, res)  => {
 };
 
 const shortForm = (req, res) => {
-    res.render('index');
+    res.render('create-friend.hbs');
 };
 
-module.exports = { friendCreate, shortForm };
+const showAllFriends = (req, res) => {
+    Friend.find()
+      .then((friends) => {
+        res.render("index.hbs", { friends });
+      })
+      .catch((err) => {
+        console.log(`Error while getting the friends from the DB: ${err}`);
+      });
+  };
+
+
+module.exports = { friendCreate, shortForm, showAllFriends };
