@@ -3,7 +3,7 @@ A small project where I practiced the usage of the MVC pattern.
 
 Technologies Used
 HTML
-CSS
+Tailwind
 JavaScript
 MongoDB
 hbs (Handlebars)
